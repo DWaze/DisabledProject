@@ -11,6 +11,20 @@
             </list>
           </settings>
         </remote-mappings>
+        <remote-mappings server-id="python@ssh://pi@192.168.43.203:22/usr/local/opt/python-3.5.2/bin/python3.5">
+          <settings>
+            <list>
+              <mapping local-root="$PROJECT_DIR$" remote-root="/home/pi/Desktop/DisabledProject" />
+            </list>
+          </settings>
+        </remote-mappings>
+        <remote-mappings server-id="python@ssh://pi@192.168.43.203:22/usr/bin/python">
+          <settings>
+            <list>
+              <mapping local-root="$PROJECT_DIR$" remote-root="/home/pi/Desktop/DisabledProject/DProject" />
+            </list>
+          </settings>
+        </remote-mappings>
       </list>
     </list>
   </component>

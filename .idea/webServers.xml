@@ -2,8 +2,11 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="ssh://pi@192.168.1.109:22/usr/bin/python" name="ssh://pi@192.168.1.109:22/usr/bin/python">
-        <fileTransfer host="192.168.1.109" port="22" rootFolder="/home/pi" accessType="SFTP">
+      <webServer id="6035149b-011a-4103-9268-6934538a8ced" name="raspberry" url="http://192.168.43.203">
+        <fileTransfer host="192.168.43.203" port="22" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>

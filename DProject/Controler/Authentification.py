@@ -29,7 +29,7 @@ def login(request):
                 if hasattr(account, 'userName'):
                     result = json.dumps(account.__dict__)
                 else:
-                    result = "{}"
+                    result = '{"response":"invalid user"}'
                 return HttpResponse(result)
             except ObjectDoesNotExist:
                 return JsonResponse({},status=401)

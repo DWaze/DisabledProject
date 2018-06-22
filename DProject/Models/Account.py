@@ -9,8 +9,8 @@ import datetime
 class Account(Base):
     __tablename__ = "account"
     id = Column(Integer, primary_key=True)
-    userName = Column(String(250))
-    password = Column(String(250))
+    userName = Column(String(250), unique=True, nullable=False)
+    password = Column(String(250), unique=True, nullable=False)
     email = Column(String(250))
     type = Column(String(250))
     token = Column(String(250))

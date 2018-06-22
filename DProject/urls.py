@@ -17,11 +17,23 @@ from django.conf.urls import url
 from django.contrib import admin
 from .Controler import Authentification
 from .Controler import LightControl
+from .Controler import FanControl
 from .Controler import GmailControler
+from .Controler import TempControl
+from .Controler import GasControl
+from .Controler import StatusControl
+from .Controler import RGBControl
 
 urlpatterns = [
     url(r'^login', Authentification.login, name="login"),
-    url(r'^Light/On', LightControl.LightON, name="Light On"),
-    url(r'^Light/Off', LightControl.LightOff, name="Light Off"),
+    url(r'^Light/On', LightControl.lightOn, name="Light On"),
+    url(r'^Light/Off', LightControl.lightOff, name="Light Off"),
+    url(r'^Fan/On', FanControl.fanOn, name="Fan On"),
+    url(r'^Fan/Off', FanControl.fanOff, name="Fan Off"),
     url(r'^GetGMail', GmailControler.getGmail, name="GMail"),
+    url(r'^GetTemperature', TempControl.getTemp, name="Temperature"),
+    url(r'^GasDetection', GasControl.detection, name="GasDetection"),
+    url(r'^GasPrevention', GasControl.prevention, name="GasPrevention"),
+    url(r'^GetStatus', StatusControl.GetStatus, name="GetStatus"),
+    url(r'^ChangeColor', RGBControl.SetColor, name='index'),
 ]

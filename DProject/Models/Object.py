@@ -27,17 +27,14 @@ class Object(Base):
 
     # Area ID
 
-    area_id = Column(Integer, ForeignKey('area.id'))
+    areaID = Column(Integer, ForeignKey('area.id'))
+    area = relationship("Area", back_populates="objects")
 
-    def removeIoTNode(self, iotNode):
-        self.ioT_Nodes.remove(iotNode)
-
-    def addIoTNode(self, iotNode):
-        if iotNode not in self.ioT_Nodes:
-            if iotNode.object is not None:
-                iotNode.object.removeIoTNode(iotNode)
-
-            self.ioT_Nodes.append(iotNode)
+    def addArea(self, area):
+        if self not in area.objects:
+            if self.area is not None:
+                area.removeObject(self)
+            self.area = area
 
     # GPIO Pins
 

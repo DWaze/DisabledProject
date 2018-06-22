@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-from DProject.Manager.LightManager import LightManager
+from DProject.Manager.FanManager import FanManager
 # from managers.LightManager import LightManager
 from DProject.Controler.AlchemyEncoder import AlchemyEncoder
 import json
@@ -11,7 +11,7 @@ from DProject.Manager.LoginManager import LoginManager
 
 
 @method_decorator(csrf_exempt)
-def lightOn(request):
+def fanOn(request):
     if request.method == 'POST':
         try:
             info = request.body.decode('utf-8')
@@ -25,12 +25,12 @@ def lightOn(request):
             lManager = LoginManager()
             account = lManager.check_token(token)
             if hasattr(account, 'userName'):
-                lightManager = LightManager()
-                # lightManager.createObject()
-                result = lightManager.lightOn(object_id)
+                fanManager = FanManager()
+                # fanManager.createObject()
+                result = fanManager.fanOn(object_id)
 
                 responce = json.dumps(result.__dict__)
-                lightManager.closeSession()
+                fanManager.closeSession()
 
                 return HttpResponse(responce)
             else:
@@ -42,7 +42,7 @@ def lightOn(request):
 
 
 @method_decorator(csrf_exempt)
-def lightOff(request):
+def fanOff(request):
     if request.method == 'POST':
         try:
             info = request.body.decode('utf-8')
@@ -56,10 +56,10 @@ def lightOff(request):
             lManager = LoginManager()
             account = lManager.check_token(token)
             if hasattr(account, 'userName'):
-                lightManager = LightManager()
-                result = lightManager.lightOff(object_id)
+                fanManager = FanManager()
+                result = fanManager.fanOff(object_id)
                 responce = json.dumps(result.__dict__)
-                lightManager.closeSession()
+                fanManager.closeSession()
 
                 return HttpResponse(responce)
             else:

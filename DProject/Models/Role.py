@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from DProject.Models.base import Base
+import datetime
 
 
 association_table2 = Table('rNodes', Base.metadata,
@@ -14,8 +15,8 @@ class Constraint(Base):
     __tablename__= 'constraint'
     role_id = Column(Integer, ForeignKey('role.id'), primary_key=True)
     account_id = Column(Integer, ForeignKey('account.id'), primary_key=True)
-    startDate = Column(DateTime)
-    endDate = Column(DateTime)
+    startDate = Column(DateTime, default=datetime.datetime.utcnow)
+    endDate = Column(DateTime, default=datetime.datetime.utcnow)
     account = relationship("Account", back_populates="constraints")
     role = relationship("Role", back_populates="constraints")
 

@@ -47,7 +47,7 @@ class AccountDAO(DAO):
     def findLogin(self, username, password):
         session = self.DBSession
         try:
-            account = session.query(Account).filter(Account.userName==username,Account.password==password).first()
+            account = session.query(Account).filter(Account.userName == username,Account.password == password).first()
             return account
         except exc.SQLAlchemyError as e:
             print(e)
@@ -62,4 +62,14 @@ class AccountDAO(DAO):
         except exc.SQLAlchemyError as e:
             print(e)
             print("SQLAlchemy error in  class!",self.__class__.__name__)
+            return []
+
+    def findByToken(self,token):
+        session = self.DBSession
+        try:
+            account = session.query(Account).filter(Account.token == token).first()
+            return account
+        except exc.SQLAlchemyError as e:
+            print(e)
+            print("SQLAlchemy error in  class!", self.__class__.__name__)
             return []

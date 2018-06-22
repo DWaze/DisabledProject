@@ -1,4 +1,6 @@
 import os
+import logging
+import traceback
 
 ds18b20 = ''
 
@@ -24,11 +26,15 @@ def read():
 
 
 def run():
-    res="Current temperature : %0.3f C" % read()
-    if read() != None:
-        print(res)
-    return res
-
+    try:
+        res="%0.3f C" % read()
+        if read() is not None:
+            print(res)
+        return res
+    except Exception as e:
+        logging.error(traceback.format_exc())
+        print(e)
+        destroy()
 
 def destroy():
     pass

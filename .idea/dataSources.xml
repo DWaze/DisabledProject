@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="iot.db" uuid="a2d20631-f0c1-4ae4-a8e8-95c71da09eb8">
+    <data-source source="LOCAL" name="iot.db" uuid="b4f6e127-d45b-41d8-a443-4a4727cd4af7">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>

@@ -1,10 +1,10 @@
-from DProject.Models.Area import Area
 from DProject.Models.Empty import Empty
 from DProject.Models.StateHistory import StateHistory
 from DProject.Models.ActionHistory import ActionHistory
 from DProject.Models.Action import Action
 from DProject.Models.Object import Object
 from DProject.Models.ActionHistory import ActionHistory
+from DProject.Models.Area import Area
 
 from DProject.DAO.ActionHistoryDAO import ActionHistoryDAO
 from DProject.DAO.StateHistoryDAO import StateHistoryDAO
@@ -14,22 +14,23 @@ from DProject.DAO.AreaDAO import AreaDAO
 
 from DProject.Manager.MainManager import createSession
 
-from DProject.Drivers.relay import changeOff
-from DProject.Drivers.relay import changeOn
-from DProject.Drivers.relay import setup
+from DProject.Drivers.relayfan import changeOff
+from DProject.Drivers.relayfan import changeOn
+from DProject.Drivers.relayfan import setup
 
 import datetime
 
 
-class LightManager(object):
+class FanManager(object):
+
     DBSession = None
     AHDao = None
     SHDao = None
     actionDao = None
     objectDao = None
+    areaDAO = None
     SH = None
     AH = None
-    areaDAO = None
     action1 = None
     action2 = None
     area1 = None
@@ -45,12 +46,12 @@ class LightManager(object):
         setup()
 
     def createObject(self):
-        self.objectIot = Object("Lamp", 23.25298, 12.565981, "Off", 100.25, "5cm")
+        self.objectIot = Object("Fan", 23.25298, 12.565981, "Off", 100.25, "5cm")
 
-        self.action1 = Action("Turning On", "Changing the state of the lamp to On")
-        self.action2 = Action("Turning Off", "Changing the state of the lamp to Off")
+        self.action1 = Action("Turning On", "Changing the state of the Fan to On")
+        self.action2 = Action("Turning Off", "Changing the state of the Fan to Off")
 
-        self.area1 = Area("Bedroom", 23.25, "room", 2)
+        self.area1 = Area("Bedroom",23.25,"room",2)
 
         self.objectIot.addAction(self.action1)
         self.objectIot.addAction(self.action2)
@@ -62,7 +63,7 @@ class LightManager(object):
         self.areaDAO.create(self.area1)
         self.objectDao.create(self.objectIot)
 
-    def lightOn(self,id):
+    def fanOn(self,id):
 
         changeOn()
 
@@ -82,7 +83,7 @@ class LightManager(object):
 
         return results
 
-    def lightOff(self,id):
+    def fanOff(self,id):
         changeOff()
 
         objectNode = self.objectDao.find(id)

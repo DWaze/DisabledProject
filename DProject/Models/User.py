@@ -1,8 +1,9 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Table, Float, Date, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Table, Float, Date, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from DProject.Models.base import Base
+import datetime
 
 
 class User(Base):
@@ -11,11 +12,24 @@ class User(Base):
     firstName = Column(String(250))
     lastName = Column(String(250))
     age = Column(Integer)
-    birthDate = Column(Date)
+    birthDate = Column(DateTime, default=datetime.datetime.utcnow)
     phoneNumber = Column(String(250))
     address = Column(String(250))
     city = Column(String(250))
     country = Column(String(250))
+
+
+    def __init__(self, firstName, lastName, age, birthDate, phoneNumber, address, city,country):
+        self.firstName = firstName
+        self.lastName = lastName
+        self.age = age
+        self.birthDate = birthDate
+        self.phoneNumber = phoneNumber
+        self.address = address
+        self.city = city
+        self.country = country
+
+
 
     # ActionHistories
 

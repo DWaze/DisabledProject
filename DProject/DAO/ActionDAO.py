@@ -1,6 +1,8 @@
 from DProject.DAO.DAO import DAO
 from sqlalchemy import exc
 from sqlalchemy import delete
+
+from DProject.Models import Object
 from DProject.Models.Action import Action
 
 

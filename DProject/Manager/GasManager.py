@@ -1,9 +1,10 @@
-from DProject.Models.Area import Area
+from DProject.Drivers import GasDetection, GasPrevention,rgb
 from DProject.Models.Empty import Empty
 from DProject.Models.StateHistory import StateHistory
 from DProject.Models.ActionHistory import ActionHistory
 from DProject.Models.Action import Action
 from DProject.Models.Object import Object
+from DProject.Models.Area import Area
 from DProject.Models.ActionHistory import ActionHistory
 
 from DProject.DAO.ActionHistoryDAO import ActionHistoryDAO
@@ -14,14 +15,13 @@ from DProject.DAO.AreaDAO import AreaDAO
 
 from DProject.Manager.MainManager import createSession
 
-from DProject.Drivers.relay import changeOff
-from DProject.Drivers.relay import changeOn
-from DProject.Drivers.relay import setup
+import DProject.Drivers.GasPrevention
+
 
 import datetime
 
 
-class LightManager(object):
+class GasManager(object):
     DBSession = None
     AHDao = None
     SHDao = None
@@ -29,7 +29,6 @@ class LightManager(object):
     objectDao = None
     SH = None
     AH = None
-    areaDAO = None
     action1 = None
     action2 = None
     area1 = None
@@ -42,13 +41,25 @@ class LightManager(object):
         self.actionDao = ActionDAO(self.DBSession)
         self.objectDao = ObjectDAO(self.DBSession)
         self.areaDAO = AreaDAO(self.DBSession)
-        setup()
 
     def createObject(self):
-        self.objectIot = Object("Lamp", 23.25298, 12.565981, "Off", 100.25, "5cm")
+        # self.objectIot = Object("Lamp", 23.25298, 12.565981, "Off", 100.25, "5cm")
+        # self.objectIot = Object("Fan", 23.25298, 12.565981, "Off", 100.25, "5cm")
+        #
+        # self.action1 = Action("Turning On", "Changing the state of the Fan to On")
+        # self.action2 = Action("Turning Off", "Changing the state of the Fan to Off")
+        #
+        # self.objectIot.addAction(self.action1)
+        # self.objectIot.addAction(self.action2)
+        #
+        # self.actionDao.create(self.action1)
+        # self.actionDao.create(self.action2)
+        # self.objectDao.create(self.objectIot)
 
-        self.action1 = Action("Turning On", "Changing the state of the lamp to On")
-        self.action2 = Action("Turning Off", "Changing the state of the lamp to Off")
+        self.objectIot = Object("LED", 23.25298, 12.565981, "Off", 100.25, "5cm")
+
+        self.action1 = Action("Turning On", "Changing the state of the LED to On")
+        self.action2 = Action("Turning Off", "Changing the state of the LED to Off")
 
         self.area1 = Area("Bedroom", 23.25, "room", 2)
 
@@ -62,44 +73,40 @@ class LightManager(object):
         self.areaDAO.create(self.area1)
         self.objectDao.create(self.objectIot)
 
-    def lightOn(self,id):
+    def detection(self):
+        GasDetection.setup()
+        result = ""
+        try:
+            result = GasDetection.detect()
+        except KeyboardInterrupt:
+            GasDetection.destroy()
+        return result
 
-        changeOn()
+    def prevention(self):
+        GasPrevention.setup()
+        result = GasPrevention.prevention()
 
-        objectNode = self.objectDao.find(id)
+        name = ["LED","Fan"]
+        led = self.objectDao.findName(name[0])
+        fan = self.objectDao.findName(name[1])
 
-        self.AH = ActionHistory(datetime.datetime.now())
-        self.AH.addAction(objectNode.actions[0])
-        self.SH = StateHistory(datetime.datetime.now(),"On")
-        objectNode.addStateHistory(self.SH)
-        objectNode.state = "On"
-
-        self.SHDao.create(self.SH)
-        self.AHDao.create(self.AH)
-        self.objectDao.update(objectNode)
-
-        results = self.normalize(self.AH,self.SH,objectNode)
-
-        return results
-
-    def lightOff(self,id):
-        changeOff()
-
-        objectNode = self.objectDao.find(id)
-
-        self.AH = ActionHistory(datetime.datetime.now())
-        self.AH.addAction(objectNode.actions[1])
         self.SH = StateHistory(datetime.datetime.now(),"Off")
-        objectNode.addStateHistory(self.SH)
-        objectNode.state = "Off"
+        led.addStateHistory(self.SH)
+        led.state = "Off"
 
         self.SHDao.create(self.SH)
-        self.AHDao.create(self.AH)
-        self.objectDao.update(objectNode)
+        self.objectDao.update(led)
 
-        results = self.normalize(self.AH,self.SH,objectNode)
+        self.SH = StateHistory(datetime.datetime.now(),"On")
+        fan.addStateHistory(self.SH)
+        fan.state = "On"
 
-        return results
+        self.SHDao.create(self.SH)
+        self.objectDao.update(fan)
+
+        # results = self.normalize(self.AH,self.SH,objectNode)
+
+        return result
 
     def closeSession(self):
         self.DBSession.close()

@@ -4,7 +4,7 @@ import traceback
 import RPi.GPIO as GPIO
 import time
 
-RelayPin = 23
+RelayPin = 21
 
 def setup():
     GPIO.setmode(GPIO.BCM)

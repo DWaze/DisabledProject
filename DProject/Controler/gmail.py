@@ -33,7 +33,7 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
-    credential_dir = os.path.expanduser('/home/pi/Desktop/DisabledProject/DProject/Controler/')
+    credential_dir = os.path.expanduser('/home/pi/Desktop/DisabledProject/DProject/DProject/Controler/')
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
     credential_path = os.path.join(credential_dir,

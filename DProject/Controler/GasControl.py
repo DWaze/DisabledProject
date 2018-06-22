@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-from DProject.Manager.LightManager import LightManager
+from DProject.Manager.GasManager import GasManager
 # from managers.LightManager import LightManager
 from DProject.Controler.AlchemyEncoder import AlchemyEncoder
 import json
@@ -11,7 +11,7 @@ from DProject.Manager.LoginManager import LoginManager
 
 
 @method_decorator(csrf_exempt)
-def lightOn(request):
+def detection(request):
     if request.method == 'POST':
         try:
             info = request.body.decode('utf-8')
@@ -20,19 +20,17 @@ def lightOn(request):
             print("loads")
             return JsonResponse({},status=400)
         token = data.get("token")
-        object_id = data.get("id")
         if token:
             lManager = LoginManager()
             account = lManager.check_token(token)
             if hasattr(account, 'userName'):
-                lightManager = LightManager()
-                # lightManager.createObject()
-                result = lightManager.lightOn(object_id)
+                gasManager = GasManager()
+                # gasManager.createObject()
+                result = gasManager.detection()
 
-                responce = json.dumps(result.__dict__)
-                lightManager.closeSession()
+                gasManager.closeSession()
 
-                return HttpResponse(responce)
+                return HttpResponse(result)
             else:
                 result = '{"response":"invalid token"}'
             return HttpResponse(result)
@@ -42,7 +40,7 @@ def lightOn(request):
 
 
 @method_decorator(csrf_exempt)
-def lightOff(request):
+def prevention(request):
     if request.method == 'POST':
         try:
             info = request.body.decode('utf-8')
@@ -51,15 +49,14 @@ def lightOff(request):
             print("loads")
             return JsonResponse({},status=400)
         token = data.get("token")
-        object_id = data.get("id")
         if token:
             lManager = LoginManager()
             account = lManager.check_token(token)
             if hasattr(account, 'userName'):
-                lightManager = LightManager()
-                result = lightManager.lightOff(object_id)
-                responce = json.dumps(result.__dict__)
-                lightManager.closeSession()
+                gasManager = GasManager()
+                # gasManager.createObject()
+                responce = gasManager.prevention()
+                gasManager.closeSession()
 
                 return HttpResponse(responce)
             else:

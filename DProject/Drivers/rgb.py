@@ -3,16 +3,16 @@ import sys
 import logging
 import traceback
 
-R = 11
-G = 13
-B = 15
+R = 27
+G = 22
+B = 25
 
 
-def setup(Rpin, Gpin, Bpin):
+def setup():
     global pins
     global p_R, p_G, p_B
-    pins = {'pin_R': Rpin, 'pin_G': Gpin, 'pin_B': Bpin}
-    GPIO.setmode(GPIO.BOARD)  # Numbers GPIOs by physical location
+    pins = {'pin_R': R, 'pin_G': G, 'pin_B': B}
+    GPIO.setmode(GPIO.BCM)  # Numbers GPIOs by physical location
     for i in pins:
         GPIO.setup(pins[i], GPIO.OUT)  # Set pins' mode is output
         GPIO.output(pins[i], GPIO.HIGH)  # Set pins to high(+3.3V) to off led
@@ -63,13 +63,10 @@ def destroy():
     GPIO.cleanup()
 
 
-def run(col, pos):
+def run(col):
     try:
-        if (pos == 0):
-            setup(R, G, B)
-            ChangeColor(col)
-        else:
-            ChangeColor(col)
+        ChangeColor(col)
+        return '{"responce":"Color Changed successfully"}'
     except Exception as e:
         logging.error(traceback.format_exc())
         print(e)

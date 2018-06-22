@@ -25,12 +25,13 @@ SECRET_KEY = '+p7!#0##=c-9txgw3h*nwihy&2v_9d@8mjc1a+cv6^at(s2v&3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.109',]
+ALLOWED_HOSTS = ['192.168.1.109','192.168.43.203','localhost','192.168.137.202']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "sslserver",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -120,3 +121,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+

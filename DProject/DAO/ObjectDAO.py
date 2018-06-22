@@ -44,6 +44,16 @@ class ObjectDAO(DAO):
             print("SQLAlchemy error in  class!",self.__class__.__name__)
             return []
 
+    def findName(self, name):
+        session = self.DBSession
+        try:
+            object = session.query(Object).filter(Object.name == name).first()
+            return object
+        except exc.SQLAlchemyError as e:
+            print(e)
+            print("SQLAlchemy error in  class!", self.__class__.__name__)
+            return []
+
     def findAll(self):
         session = self.DBSession
         try:

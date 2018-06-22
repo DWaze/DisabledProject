@@ -13,6 +13,12 @@ class Area(Base):
     areaType = Column(String(250))
     floorNBR = Column(Integer)
 
+    def __init__(self, name, surface, areaType, floorNBR):
+        self.name = name
+        self.surface = surface
+        self.areaType = areaType
+        self.floorNBR = floorNBR
+
     # Agent
 
     agentID = Column(Integer, ForeignKey('agent.id'))
@@ -26,8 +32,14 @@ class Area(Base):
 
     # Objects
 
-    objects = relationship("Object")
+    objects = relationship("Object", back_populates="area")
 
-    def addObject(self,object):
-        if object not in self.objects :
+    def removeObject(self, object):
+        self.objects.remove(object)
+
+    def addObject(self, object):
+        if object not in self.objects:
+            if object.area is not None:
+                object.area.removeObject(object)
+
             self.objects.append(object)
